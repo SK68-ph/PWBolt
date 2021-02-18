@@ -13,7 +13,6 @@ namespace PWBolt.Network
 {
     static class WebServer
     {
-
         private static CookieContainer cookieContainer = new CookieContainer();
         private static string webserver = "https://elucidative-designa.000webhostapp.com";
         private static bool _isLoggedIn = false;
@@ -147,8 +146,13 @@ namespace PWBolt.Network
             Console.ResetColor();
         }
 
-        public static void Logout(string username, string pwbolt)
+        public static void Logout()
         {
+            var request = (HttpWebRequest)WebRequest.Create(webserver + "/logout.php");
+            request.CookieContainer = cookieContainer;
+            request.Credentials = CredentialCache.DefaultCredentials;
+            var response = (HttpWebResponse)request.GetResponse();
+            cookieContainer = new CookieContainer();
         }
 
     }

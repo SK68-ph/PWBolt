@@ -3,6 +3,7 @@ using PWBolt.Properties;
 using PWBolt.Network;
 using System.Diagnostics;
 using System.Threading;
+using System.Linq;
 
 namespace PWBolt
 {
@@ -37,7 +38,13 @@ namespace PWBolt
     }
     class PWMenu
     {
-         
+        private static Random random = new Random();
+        public static string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
 
         public void RegisterMenu()
         {
@@ -68,7 +75,6 @@ namespace PWBolt
         {
             string tmpUser = null;
             string tmpBoltPass = null;
-            string pin = null;
             while (string.IsNullOrWhiteSpace(tmpUser) | string.IsNullOrWhiteSpace(tmpBoltPass))
             {
                 Console.Clear();
@@ -124,7 +130,11 @@ namespace PWBolt
                     DeleteAccountMenu();
                 }
                 else if (option.KeyChar == 'q' || option.KeyChar == 'Q')
+                {
+
                     break;
+                }
+                    
             }
         }
 
@@ -143,8 +153,11 @@ namespace PWBolt
                 tmpWebSite = Console.ReadLine();
                 Console.Write("\nUser: ");
                 tmpUsername = Console.ReadLine();
-                Console.Write("\nPassword: ");
+                Console.WriteLine("\n type -r to generate random password ");
+                Console.Write("Password: ");
                 tmpPass = Console.ReadLine();
+                if (tmpPass.Equals("-r"))
+                    tmpPass = RandomString(24);
                 Console.ResetColor();
                 if (string.IsNullOrWhiteSpace(tmpWebSite) | string.IsNullOrWhiteSpace(tmpUsername) | string.IsNullOrWhiteSpace(tmpPass))
                 {
